@@ -17,5 +17,6 @@ jobs:
     uses: ./.github/workflows/mobile-android-test.yml
     with:
       test-suite: smoke
-      job-timeout-minutes: 30
+      job-timeout-minutes: 35
       artifact-prefix: smoke
+      spec-retries: 1

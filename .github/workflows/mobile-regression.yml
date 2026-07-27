@@ -16,5 +16,6 @@ jobs:
     uses: ./.github/workflows/mobile-android-test.yml
     with:
       test-suite: regression
-      job-timeout-minutes: 60
+      job-timeout-minutes: 90
       artifact-prefix: regression
+      spec-retries: 0

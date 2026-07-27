@@ -17,6 +17,11 @@ on:
         required: false
         type: string
         default: mobile
+      spec-retries:
+        description: WebdriverIO spec-file retries (0 for regression, 1 for smoke)
+        required: false
+        type: number
+        default: 0
 
 jobs:
   android-tests:
@@ -26,6 +31,8 @@ jobs:
     env:
       APPIUM_HOME: ${{ github.workspace }}
       CI: true
+      CI_SPEC_RETRIES: ${{ inputs.spec-retries }}
+      APP_LAUNCH_TIMEOUT: '120000'
 
     steps:
       - name: Checkout repository

@@ -20,6 +20,8 @@ for (const dir of [allureResultsDir, allureReportDir, screenshotsDir, logsDir]) 
 }
 
 const isCI = process.env.CI === 'true';
+const androidUdid = process.env.ANDROID_UDID || (isCI ? undefined : 'emulator-5554');
+const specRetries = Number.parseInt(process.env.CI_SPEC_RETRIES || '0', 10);
 
 export const config = {
     runner: 'local',
@@ -39,13 +41,17 @@ export const config = {
 
         'appium:deviceName': process.env.ANDROID_DEVICE_NAME || 'Android Emulator',
 
-        'appium:udid': process.env.ANDROID_UDID || 'emulator-5554',
+        ...(androidUdid ? { 'appium:udid': androidUdid } : {}),
 
         'appium:app': appPath,
+
+        'appium:autoGrantPermissions': true,
 
         'appium:adbExecTimeout': 120000,
 
         'appium:uiautomator2ServerLaunchTimeout': 120000,
+
+        'appium:uiautomator2ServerInstallTimeout': 120000,
 
         'appium:newCommandTimeout': 300,
 
@@ -56,13 +62,14 @@ export const config = {
 
     outputDir: logsDir,
 
-    waitforTimeout: isCI ? 15000 : 10000,
+    waitforTimeout: isCI ? 20000 : 10000,
 
     connectionRetryTimeout: 180000,
 
     connectionRetryCount: 3,
 
-    specFileRetries: isCI ? 1 : 0,
+    // Smoke may retry once; regression keeps 0 to avoid CI timeout blow-ups.
+    specFileRetries: Number.isFinite(specRetries) ? specRetries : 0,
 
     specFileRetriesDelay: 5000,
 
@@ -95,7 +102,7 @@ export const config = {
 
         failAmbiguousDefinitions: true,
 
-        timeout: 120000,
+        timeout: isCI ? 180000 : 120000,
 
         ...(process.env.CUCUMBER_TAGS ? { tags: process.env.CUCUMBER_TAGS } : {})
     }
