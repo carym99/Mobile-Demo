@@ -1,0 +1,38 @@
+{
+  "name": "appium-demo",
+  "version": "1.0.0",
+  "description": "Production-ready Appium + WebdriverIO + Cucumber mobile automation framework for Android",
+  "type": "module",
+  "scripts": {
+    "test": "wdio run ./config/wdio.conf.js",
+    "test:smoke": "cross-env CUCUMBER_TAGS=\"@smoke\" wdio run ./config/wdio.conf.js",
+    "test:regression": "cross-env CUCUMBER_TAGS=\"@regression\" wdio run ./config/wdio.conf.js",
+    "test:authentication": "wdio run ./config/wdio.conf.js --spec ./features/authentication/**/*.feature",
+    "test:products": "wdio run ./config/wdio.conf.js --spec ./features/catalog/**/*.feature",
+    "test:cart": "wdio run ./config/wdio.conf.js --spec ./features/cart/**/*.feature",
+    "allure:generate": "allure generate reports/allure-results --clean -o reports/allure-report",
+    "allure:open": "allure open reports/allure-report",
+    "appium:doctor": "appium driver doctor uiautomator2",
+    "appium:install-driver": "appium driver install uiautomator2"
+  },
+  "devDependencies": {
+    "@cucumber/cucumber": "^10.9.0",
+    "@wdio/allure-reporter": "^9.30.0",
+    "@wdio/appium-service": "^9.30.0",
+    "@wdio/cli": "^9.30.0",
+    "@wdio/cucumber-framework": "^9.30.0",
+    "@wdio/globals": "^9.29.1",
+    "@wdio/local-runner": "^9.30.0",
+    "@wdio/spec-reporter": "^9.29.1",
+    "allure-commandline": "^2.43.0",
+    "appium": "^3.5.2",
+    "appium-uiautomator2-driver": "^4.2.9",
+    "cross-env": "^10.1.0",
+    "dotenv": "^17.4.2",
+    "expect-webdriverio": "^5.7.0",
+    "webdriverio": "^9.30.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
