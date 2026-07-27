@@ -30,6 +30,7 @@ adb shell pm grant io.appium.settings android.permission.ACCESS_FINE_LOCATION ||
 adb shell pm grant io.appium.settings android.permission.ACCESS_COARSE_LOCATION || true
 adb shell settings put global hide_error_dialogs 1 || true
 
+export APPIUM_HOME="${APPIUM_HOME:-$PWD}"
 export ANDROID_UDID="${ANDROID_UDID:-emulator-5554}"
 export CI=true
 

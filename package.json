@@ -13,7 +13,7 @@
     "allure:generate": "allure generate reports/allure-results --clean -o reports/allure-report",
     "allure:open": "allure open reports/allure-report",
     "appium:doctor": "appium driver doctor uiautomator2",
-    "appium:install-driver": "appium driver install uiautomator2"
+    "appium:install-driver": "appium driver install --source=npm appium-uiautomator2-driver"
   },
   "devDependencies": {
     "@cucumber/cucumber": "^10.9.0",
