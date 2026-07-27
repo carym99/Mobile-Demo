@@ -62,6 +62,10 @@ export const config = {
 
     connectionRetryCount: 3,
 
+    specFileRetries: isCI ? 1 : 0,
+
+    specFileRetriesDelay: 5000,
+
     framework: 'cucumber',
 
     services: [

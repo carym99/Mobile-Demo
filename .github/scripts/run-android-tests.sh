@@ -1,26 +1,23 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-echo "==> Waiting for Android emulator to boot"
-adb wait-for-device
+TEST_SUITE="${1:-smoke}"
 
-boot_completed=""
-attempt=0
-max_attempts=60
+case "$TEST_SUITE" in
+  smoke)
+    NPM_SCRIPT="test:smoke"
+    ;;
+  regression)
+    NPM_SCRIPT="test:regression"
+    ;;
+  *)
+    echo "Unknown test suite: $TEST_SUITE (expected smoke or regression)" >&2
+    exit 1
+    ;;
+esac
 
-while [[ "$boot_completed" != "1" && $attempt -lt $max_attempts ]]; do
-  boot_completed="$(adb shell getprop sys.boot_completed 2>/dev/null | tr -d '\r')"
-  attempt=$((attempt + 1))
-  sleep 2
-done
-
-if [[ "$boot_completed" != "1" ]]; then
-  echo "Emulator did not finish booting within the expected time" >&2
-  exit 1
-fi
-
-echo "==> Emulator ready"
-adb devices
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+bash "$SCRIPT_DIR/wait-for-emulator.sh"
 
 echo "==> Installing demo APK"
 adb install -r "apps/Android-MyDemoAppRN.1.3.0.build-244.apk"
@@ -34,5 +31,5 @@ export APPIUM_HOME="${APPIUM_HOME:-$PWD}"
 export ANDROID_UDID="${ANDROID_UDID:-emulator-5554}"
 export CI=true
 
-echo "==> Running WebdriverIO test suite"
-npm test
+echo "==> Running WebdriverIO ${TEST_SUITE} suite (npm run ${NPM_SCRIPT})"
+npm run "$NPM_SCRIPT"

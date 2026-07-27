@@ -1,0 +1,21 @@
+name: Mobile Smoke
+
+on:
+  pull_request:
+  push:
+    branches-ignore:
+      - main
+      - master
+
+concurrency:
+  group: mobile-smoke-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  smoke:
+    name: Smoke Suite
+    uses: ./.github/workflows/mobile-android-test.yml
+    with:
+      test-suite: smoke
+      job-timeout-minutes: 30
+      artifact-prefix: smoke

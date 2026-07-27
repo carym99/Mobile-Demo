@@ -338,7 +338,7 @@ Checklist for AI planning (update this section when capabilities land):
 - ✅ Smoke Suite tagging (`@smoke`)
 - ✅ Regression Suite tagging (`@regression`)
 - ✅ Allure reporter wired in `wdio.conf.js`
-- ✅ GitHub Actions workflow (`.github/workflows/mobile-ci.yml`)
+- ✅ GitHub Actions workflow (`.github/workflows/mobile-smoke.yml`, `mobile-regression.yml`, `mobile-nightly.yml`)
 - ✅ Env-driven device/UDID/app path for CI (`ANDROID_UDID`, `APPIUM_HOST`, `APPIUM_PORT`)
 - ✅ Screenshot-on-failure in hooks
 - ⬜ Expanded test-data (`addresses.js`, `payment.js`)
@@ -473,6 +473,15 @@ Hardened `@resetApp` with terminate → clearApp → activate, a recover path, l
 
 Reason:
 Long suites with many clearApp cycles can stall UiAutomator2; soft recovery must not fail when a session is already authenticated.
+
+---
+
+## Decision 010
+
+Split CI into multi-stage workflows: smoke on PR/feature pushes, regression on main/master, nightly scheduled regression. Reusable workflow `mobile-android-test.yml` centralises setup and artifact upload.
+
+Reason:
+Enterprise CI/CD practice — fast smoke feedback (~3 scenarios) on every PR; full regression only on protected branches and nightly schedule. Reduces CI time, flakiness exposure, and timeout risk.
 
 ---
 

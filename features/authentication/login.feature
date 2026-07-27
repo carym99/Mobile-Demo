@@ -1,12 +1,12 @@
 Feature: Authentication
 
-  @smoke @regression @resetApp
+  @smoke @regression @authentication @resetApp
   Scenario: Successful login
     Given I am on the Login screen
     When I login with valid credentials
     Then I should be redirected to the Products page
 
-  @regression @resetApp
+  @regression @authentication @resetApp
   Scenario: Locked out user cannot login
     Given I am on the Login screen
     When I login with locked out credentials

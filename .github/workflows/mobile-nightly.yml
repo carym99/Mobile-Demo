@@ -1,0 +1,19 @@
+name: Mobile Nightly Regression
+
+on:
+  schedule:
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: mobile-nightly-regression
+  cancel-in-progress: false
+
+jobs:
+  nightly-regression:
+    name: Nightly Regression Suite
+    uses: ./.github/workflows/mobile-android-test.yml
+    with:
+      test-suite: regression
+      job-timeout-minutes: 60
+      artifact-prefix: nightly

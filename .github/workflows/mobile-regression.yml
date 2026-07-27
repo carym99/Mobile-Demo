@@ -1,0 +1,20 @@
+name: Mobile Regression
+
+on:
+  push:
+    branches:
+      - main
+      - master
+
+concurrency:
+  group: mobile-regression-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  regression:
+    name: Regression Suite
+    uses: ./.github/workflows/mobile-android-test.yml
+    with:
+      test-suite: regression
+      job-timeout-minutes: 60
+      artifact-prefix: regression

@@ -1,6 +1,6 @@
 Feature: Shopping Cart
 
-  @smoke @regression @resetApp
+  @smoke @regression @cart @resetApp
   Scenario: Add a product to cart
     Given I am on the Products page
     When I open the product "Sauce Labs Backpack"
@@ -15,7 +15,7 @@ Feature: Shopping Cart
     And the cart total should be "$59.98"
     And the cart item count label should be "2 items"
 
-  @regression @resetApp
+  @regression @cart @resetApp
   Scenario: Update quantity in the cart
     Given I have added "Sauce Labs Backpack" with color "blue" and quantity 2 to the cart
     When I increase the cart quantity for "Sauce Labs Backpack"
@@ -23,14 +23,14 @@ Feature: Shopping Cart
     And the cart total should be "$89.97"
     And the cart item count label should be "3 items"
 
-  @regression @resetApp
+  @regression @cart @resetApp
   Scenario: Remove product from the cart
     Given I have added "Sauce Labs Backpack" with color "blue" and quantity 1 to the cart
     When I remove "Sauce Labs Backpack" from the cart
     Then the cart should be empty
     And the cart badge should not show a quantity
 
-  @regression @resetApp
+  @regression @cart @resetApp
   Scenario: Add multiple products to the cart
     Given I am on the Products page
     When I open the product "Sauce Labs Backpack"
