@@ -6,9 +6,11 @@ TEST_SUITE="${1:-smoke}"
 case "$TEST_SUITE" in
   smoke)
     NPM_SCRIPT="test:smoke"
+    export CUCUMBER_TAGS="@smoke"
     ;;
   regression)
     NPM_SCRIPT="test:regression"
+    export CUCUMBER_TAGS="@regression"
     ;;
   *)
     echo "Unknown test suite: $TEST_SUITE (expected smoke or regression)" >&2
@@ -32,6 +34,7 @@ if [[ -z "$DETECTED_UDID" ]]; then
 fi
 
 echo "==> Using ANDROID_UDID=${DETECTED_UDID}"
+echo "==> Using CUCUMBER_TAGS=${CUCUMBER_TAGS}"
 
 echo "==> Installing demo APK"
 adb install -r "apps/Android-MyDemoAppRN.1.3.0.build-244.apk"
