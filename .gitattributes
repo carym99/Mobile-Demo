@@ -1,0 +1,4 @@
+# Force LF for shell scripts and workflows so Linux CI runners execute them correctly.
+*.sh text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf

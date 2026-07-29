@@ -8,7 +8,7 @@ adb wait-for-device
 echo "==> Waiting for boot completion"
 boot_completed=""
 attempt=0
-max_boot_attempts=90
+max_boot_attempts=60
 
 while [[ "$boot_completed" != "1" && $attempt -lt $max_boot_attempts ]]; do
   boot_completed="$(adb shell getprop sys.boot_completed 2>/dev/null | tr -d '\r')"
@@ -41,4 +41,4 @@ if [[ "$pm_ready" != "true" ]]; then
 fi
 
 echo "==> Emulator ready"
-adb devices
+adb devices -l

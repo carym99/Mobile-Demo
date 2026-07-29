@@ -20,8 +20,9 @@ for (const dir of [allureResultsDir, allureReportDir, screenshotsDir, logsDir]) 
 }
 
 const isCI = process.env.CI === 'true';
-const androidUdid = process.env.ANDROID_UDID || (isCI ? undefined : 'emulator-5554');
+const androidUdid = process.env.ANDROID_UDID || 'emulator-5554';
 const specRetries = Number.parseInt(process.env.CI_SPEC_RETRIES || '0', 10);
+const cucumberTags = process.env.CUCUMBER_TAGS?.trim();
 
 export const config = {
     runner: 'local',
@@ -41,7 +42,7 @@ export const config = {
 
         'appium:deviceName': process.env.ANDROID_DEVICE_NAME || 'Android Emulator',
 
-        ...(androidUdid ? { 'appium:udid': androidUdid } : {}),
+        'appium:udid': androidUdid,
 
         'appium:app': appPath,
 
@@ -104,6 +105,6 @@ export const config = {
 
         timeout: isCI ? 180000 : 120000,
 
-        ...(process.env.CUCUMBER_TAGS ? { tags: process.env.CUCUMBER_TAGS } : {})
+        ...(cucumberTags ? { tags: cucumberTags } : {})
     }
 };

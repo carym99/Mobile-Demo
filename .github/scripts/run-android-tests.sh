@@ -5,12 +5,10 @@ TEST_SUITE="${1:-smoke}"
 
 case "$TEST_SUITE" in
   smoke)
-    NPM_SCRIPT="test:smoke"
-    export CUCUMBER_TAGS="@smoke"
+    TAG_EXPRESSION="@smoke"
     ;;
   regression)
-    NPM_SCRIPT="test:regression"
-    export CUCUMBER_TAGS="@regression"
+    TAG_EXPRESSION="@regression"
     ;;
   *)
     echo "Unknown test suite: $TEST_SUITE (expected smoke or regression)" >&2
@@ -34,12 +32,12 @@ if [[ -z "$DETECTED_UDID" ]]; then
 fi
 
 echo "==> Using ANDROID_UDID=${DETECTED_UDID}"
-echo "==> Using CUCUMBER_TAGS=${CUCUMBER_TAGS}"
+echo "==> Using cucumber tags=${TAG_EXPRESSION}"
 
 echo "==> Installing demo APK"
 adb install -r "apps/Android-MyDemoAppRN.1.3.0.build-244.apk"
 
-echo "==> Granting Appium helper permissions"
+echo "==> Preparing device settings"
 adb shell pm grant io.appium.settings android.permission.ACCESS_FINE_LOCATION || true
 adb shell pm grant io.appium.settings android.permission.ACCESS_COARSE_LOCATION || true
 adb shell settings put global hide_error_dialogs 1 || true
@@ -50,8 +48,9 @@ adb shell settings put global window_animation_scale 0 || true
 export APPIUM_HOME="${APPIUM_HOME:-$PWD}"
 export ANDROID_UDID="$DETECTED_UDID"
 export CI=true
-export APP_LAUNCH_TIMEOUT="${APP_LAUNCH_TIMEOUT:-120000}"
+export APP_LAUNCH_TIMEOUT="${APP_LAUNCH_TIMEOUT:-90000}"
 export CI_SPEC_RETRIES="${CI_SPEC_RETRIES:-0}"
+export CUCUMBER_TAGS="$TAG_EXPRESSION"
 
-echo "==> Running WebdriverIO ${TEST_SUITE} suite (npm run ${NPM_SCRIPT})"
-npm run "$NPM_SCRIPT"
+echo "==> Running WebdriverIO ${TEST_SUITE} suite"
+npx wdio run ./config/wdio.conf.js --cucumberOpts.tags="$TAG_EXPRESSION"

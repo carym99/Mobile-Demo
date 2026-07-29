@@ -6,6 +6,7 @@ on:
     branches-ignore:
       - main
       - master
+  workflow_dispatch:
 
 concurrency:
   group: mobile-smoke-${{ github.ref }}
@@ -17,6 +18,6 @@ jobs:
     uses: ./.github/workflows/mobile-android-test.yml
     with:
       test-suite: smoke
-      job-timeout-minutes: 60
+      job-timeout-minutes: 45
       artifact-prefix: smoke
-      spec-retries: 1
+      spec-retries: 0
